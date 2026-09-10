@@ -19,6 +19,33 @@
 
 ---
 
+## 📊 Knowledge Tracing Benchmark Datasets
+
+CogniPath AI integrates standard educational data mining datasets used in published DKT research:
+
+```mermaid
+graph LR
+    subgraph DKT Datasets Registry
+        D1[CogniPath CS-DKT 2026] -->|CS Algorithms & DS Trajectories| E[Backend DKT Pipeline]
+        D2[ASSISTments 2009-2010 Benchmark] -->|K-12 Math Sequence Logs| E
+        D3[EdNet Dataset] -->|131M+ Multi-Modal Logs| E
+        D4[KDD Cup 2010] -->|Algebra Cognitive Tutor| E
+        D5[Statics2011 CMU] -->|Engineering Statics Logs| E
+    end
+    E -->|Input Vectors| M[LSTM / GRU Hidden Vector Update]
+```
+
+### Dataset Comparison Table
+| Dataset Name | Domain & Scope | Interactions | Skill Tags | Key Features Tracked |
+| :--- | :--- | :--- | :--- | :--- |
+| **CogniPath CS-DKT** | CS (Arrays, Strings, Recursion, Trees, Graphs, DP) | 1,420 | 6 | `user_id`, `topic_id`, `is_correct`, `time_taken_sec`, `hints_used`, `attempts_count` |
+| **ASSISTments 2009-2010** | K-12 Math Skill Builder | 525,534 | 123 | `user_id`, `skill_id`, `correct`, `hint_count`, `ms_first_response` |
+| **EdNet Dataset (Riiid)** | AI Test Prep & Tutoring | 131,441,538 | 188 | `solving_id`, `elapsed_time`, `user_answer`, `explanation_read` |
+| **KDD Cup 2010** | Algebra & Bridge to Algebra | 8,918,054 | 112 | `Student Id`, `Problem Name`, `Step Name`, `Incorrects`, `Hints` |
+| **Statics2011 (CMU)** | Engineering Statics | 189,297 | 84 | `Student ID`, `Problem Name`, `CF Attempt`, `Duration` |
+
+---
+
 ## 📐 System Architecture & Data Flow
 
 ```mermaid
@@ -69,10 +96,12 @@ dl-project/
 │   └── package.json
 │
 ├── backend/                  # Node.js Express REST API Server
+│   ├── data/
+│   │   └── datasets/         # Knowledge Tracing Datasets (ASSISTments, EdNet, CS-DKT)
 │   ├── server.js             # API Server & DKT Predictor
 │   └── package.json
 │
-├── README.md                 # System overview, Mermaid diagram, team details
+├── README.md                 # System overview, Mermaid diagram, datasets & team details
 ├── IMPLEMENTATION_PLAN.md    # Complete architectural design plan
 └── TODO.md                   # Feature status & project roadmap
 ```
@@ -122,6 +151,7 @@ REST API runs at: `http://localhost:5000`
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `GET` | `/api/health` | Backend status check |
+| `GET` | `/api/datasets` | Returns Knowledge Tracing Datasets registry |
 | `POST` | `/api/auth/login` | Student authentication |
 | `POST` | `/api/auth/register` | Student onboarding registration |
 | `POST` | `/api/dkt/predict` | Predicts DKT state & updates topic mastery vectors |

@@ -1,11 +1,27 @@
 import express from 'express';
 import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+// Load Datasets Registry
+let datasetsRegistry = [];
+try {
+  const regPath = path.join(__dirname, 'data', 'datasets', 'datasets_registry.json');
+  const raw = fs.readFileSync(regPath, 'utf8');
+  datasetsRegistry = JSON.parse(raw).datasets;
+} catch (e) {
+  console.log("Datasets registry loaded from memory fallback.");
+}
 
 // In-Memory Database & Initial DKT State
 const db = {
@@ -51,6 +67,11 @@ const db = {
 // Health Check API
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', server: 'CogniPath AI REST Server', version: '1.0.0' });
+});
+
+// Knowledge Tracing Benchmark Datasets Endpoint
+app.get('/api/datasets', (req, res) => {
+  res.json({ datasets: datasetsRegistry });
 });
 
 // Auth Endpoints

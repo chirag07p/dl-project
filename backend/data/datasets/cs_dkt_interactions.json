@@ -1,0 +1,23 @@
+{
+  "datasetId": "cs-dkt-2026",
+  "datasetName": "CogniPath CS-DKT Interaction Trajectories",
+  "schema": {
+    "user_id": "string",
+    "topic_id": "string",
+    "question_id": "string",
+    "is_correct": "boolean",
+    "time_taken_sec": "number",
+    "hints_used": "number",
+    "attempts_count": "number",
+    "dkt_mastery_before": "number",
+    "dkt_mastery_after": "number"
+  },
+  "sampleSequences": [
+    { "user_id": "S101", "topic_id": "arrays", "question_id": "q-arr-1", "is_correct": true, "time_taken_sec": 28, "hints_used": 0, "attempts_count": 1, "dkt_mastery_before": 0.80, "dkt_mastery_after": 0.89 },
+    { "user_id": "S101", "topic_id": "strings", "question_id": "q-str-1", "is_correct": true, "time_taken_sec": 34, "hints_used": 0, "attempts_count": 1, "dkt_mastery_before": 0.78, "dkt_mastery_after": 0.85 },
+    { "user_id": "S101", "topic_id": "recursion", "question_id": "q-rec-1", "is_correct": false, "time_taken_sec": 75, "hints_used": 1, "attempts_count": 2, "dkt_mastery_before": 0.50, "dkt_mastery_after": 0.41 },
+    { "user_id": "S101", "topic_id": "recursion", "question_id": "q-rec-2", "is_correct": true, "time_taken_sec": 42, "hints_used": 0, "attempts_count": 1, "dkt_mastery_before": 0.41, "dkt_mastery_after": 0.49 },
+    { "user_id": "S102", "topic_id": "trees", "question_id": "q-tree-1", "is_correct": true, "time_taken_sec": 31, "hints_used": 0, "attempts_count": 1, "dkt_mastery_before": 0.55, "dkt_mastery_after": 0.64 },
+    { "user_id": "S102", "topic_id": "dp", "question_id": "q-dp-1", "is_correct": false, "time_taken_sec": 110, "hints_used": 2, "attempts_count": 3, "dkt_mastery_before": 0.40, "dkt_mastery_after": 0.31 }
+  ]
+}

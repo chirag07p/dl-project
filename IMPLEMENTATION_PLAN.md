@@ -5,13 +5,18 @@ CogniPath AI is built as a decoupled full-stack platform consisting of:
 1. **Frontend**: React 18 + Vite SPA using Lucide Icons, Recharts, and custom CSS design tokens.
 2. **Backend**: Express REST API server simulating Deep Knowledge Tracing (DKT) recurrent state updates.
 3. **Core Engine**: LSTM/GRU sequence modeling heuristic tracking response duration, attempts, correctness, and hint penalties.
+4. **Knowledge Tracing Datasets**: Integrated datasets (ASSISTments 2009-2010, EdNet, KDD Cup 2010, Statics2011, and CogniPath CS-DKT) located in `backend/data/datasets/`.
 
 ## 2. Directory Layout
 - `frontend/`: Contains all client UI views (13 distinct pages), state context providers, and design system styling.
-- `backend/`: Server application presenting REST endpoints for authentication, DKT vector inference, topic catalogues, analytics, and spaced repetition queues.
+- `backend/`: Server application presenting REST endpoints for authentication, DKT vector inference, topic catalogues, analytics, spaced repetition queues, and dataset registry (`/api/datasets`).
+- `backend/data/datasets/`:
+  - `datasets_registry.json`: Metadata for 5 benchmark DKT datasets.
+  - `cs_dkt_interactions.json`: Computer Science interaction sequences (Arrays, Strings, Recursion, Trees, Graphs, DP).
+  - `assistments_sample.json`: ASSISTments 2009-2010 benchmark sample records.
 
 ## 3. Data Flow & DKT Algorithm
-- **Inputs**: `(question_id, topic_id, is_correct, time_taken_sec, attempts_count, hints_used_count)`
+- **Inputs**: `(user_id, question_id, topic_id, is_correct, time_taken_sec, attempts_count, hints_used_count)`
 - **Calculation**:
   $$\text{Delta} = \text{baseDelta} + \text{timeBonus} - \text{hintPenalty} - \text{attemptPenalty}$$
 - **State Updates**:
