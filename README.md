@@ -25,14 +25,14 @@ CogniPath AI integrates standard educational data mining datasets used in publis
 
 ```mermaid
 graph LR
-    subgraph DKT Datasets Registry
-        D1[CogniPath CS-DKT 2026] -->|CS Algorithms & DS Trajectories| E[Backend DKT Pipeline]
-        D2[ASSISTments 2009-2010 Benchmark] -->|K-12 Math Sequence Logs| E
-        D3[EdNet Dataset] -->|131M+ Multi-Modal Logs| E
-        D4[KDD Cup 2010] -->|Algebra Cognitive Tutor| E
-        D5[Statics2011 CMU] -->|Engineering Statics Logs| E
+    subgraph "DKT Datasets Registry"
+        D1["CogniPath CS-DKT 2026"] -->|CS Algorithms and DS Trajectories| E["Backend DKT Pipeline"]
+        D2["ASSISTments 2009-2010 Benchmark"] -->|K-12 Math Sequence Logs| E
+        D3["EdNet Dataset"] -->|131M+ Multi-Modal Logs| E
+        D4["KDD Cup 2010"] -->|Algebra Cognitive Tutor| E
+        D5["Statics2011 CMU"] -->|Engineering Statics Logs| E
     end
-    E -->|Input Vectors| M[LSTM / GRU Hidden Vector Update]
+    E -->|Input Vectors| M["LSTM / GRU Hidden Vector Update"]
 ```
 
 ### Dataset Comparison Table
@@ -50,27 +50,27 @@ graph LR
 
 ```mermaid
 graph TD
-    subgraph Student Interaction Layer
-        A[Student Solves Question] -->|Correctness, Time Taken, Hints, Attempts| B[Frontend UI Engine]
+    subgraph "Student Interaction Layer"
+        A["Student Solves Question"] -->|Correctness, Time Taken, Hints, Attempts| B["Frontend UI Engine"]
     end
 
-    subgraph Deep Knowledge Tracing (DKT) Core
-        B -->|POST /api/dkt/predict| C[Express REST API Server]
-        C --> D[LSTM / GRU Recurrent Sequence Model]
-        D -->|Update Hidden State Vector| E[Topic Knowledge Profile Estimator]
+    subgraph "Deep Knowledge Tracing DKT Core"
+        B -->|POST /api/dkt/predict| C["Express REST API Server"]
+        C --> D["LSTM / GRU Recurrent Sequence Model"]
+        D -->|Update Hidden State Vector| E["Topic Knowledge Profile Estimator"]
     end
 
-    subgraph Analysis & Diagnostic Engine
-        E --> F[Weakness Detector]
-        E --> G[Forgetting Curve Tracker]
-        E --> H[Learning Velocity Engine]
+    subgraph "Analysis and Diagnostic Engine"
+        E --> F["Weakness Detector"]
+        E --> G["Forgetting Curve Tracker"]
+        E --> H["Learning Velocity Engine"]
     end
 
-    subgraph Adaptive Recommendation Layer
-        F --> I[AI Recommendation System]
+    subgraph "Adaptive Recommendation Layer"
+        F --> I["AI Recommendation System"]
         G --> I
         H --> I
-        I -->|Select Topic, Adjust Difficulty & Spaced Revision| J[Adaptive Question Bank Generator]
+        I -->|Select Topic, Adjust Difficulty and Spaced Revision| J["Adaptive Question Bank Generator"]
     end
 
     J -->|Deliver Next Personal Question| A
