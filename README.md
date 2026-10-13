@@ -1,91 +1,85 @@
-# 🧠 Personalized AI Learning System (Deep Knowledge Tracing)
+# 🧠 CogniPath AI - Personalized AI Learning System (Deep Knowledge Tracing)
 
-A state-of-the-art Deep Learning system for personalized Computer Science (DSA) and cognitive knowledge tracing, built with **PyTorch (LSTM-based Deep Knowledge Tracing)**, cognitive diagnostics (Weakness, Ebbinghaus Forgetting, and Learning Style Detection), and adaptive recommendation.
+> **An Adaptive Deep Learning-Based Student Learning & Recommendation Engine** utilizing Deep Knowledge Tracing (DKT), sequence modeling (LSTM recurrent neural networks), cognitive mastery estimation, and automated spaced-repetition revision.
 
 ---
 
-## 📊 Dataset Comparison Table
+## 👥 Project Team & Domain Details
+
+- **Project Domain**: Deep Learning, Adaptive Learning, Knowledge Tracing, Intelligent Tutoring Systems
+- **Target Objective**: Build an AI learning system that understands each student's changing progress and updates their personalized learning trajectory in real-time.
+
+### Team Members
+| Name | Register Number | Role |
+| :--- | :--- | :--- |
+| **Chirag Pradhan** | `24BCE7237` | Lead Developer & AI System Architect |
+| **Darga Syed Javid** | `24BCA7689` | Deep Learning & Sequence Modeling |
+| **Shaik Mansoor** | `24BCA7204` | Knowledge Tracing & Analytics |
+| **Boyina Arunkamal** | `24BCA7881` | UI/UX & Component Architecture |
+
+---
+
+## 📊 Knowledge Tracing Benchmark Datasets
+
+CogniPath AI integrates standard educational data mining datasets used in published DKT research:
+
+```mermaid
+graph LR
+    subgraph "DKT Datasets Registry"
+        D1["CogniPath CS-DKT 2026"] -->|CS Algorithms & DS Trajectories| E["Backend DKT Pipeline"]
+        D2["ASSISTments 2009-2010 Benchmark"] -->|K-12 Math Sequence Logs| E
+        D3["EdNet Dataset"] -->|131M+ Multi-Modal Logs| E
+        D4["KDD Cup 2010"] -->|Algebra Cognitive Tutor| E
+        D5["Statics2011 CMU"] -->|Engineering Statics Logs| E
+    end
+    E -->|Input Vectors| M["LSTM Recurrent Knowledge State Update"]
+```
+
+### Dataset Comparison Table
 
 All benchmark datasets are extracted, formatted, and saved as **Pipe-Separated Values (`.psv`)** in the [`data/psv/`](file:///c:/Users/Chirag%20Pradhan/dl%20model/data/psv/) directory.
 
 | Dataset Name | Domain & Scope | Interactions | Skill Tags | Key Features Tracked |
 | :--- | :--- | :---: | :---: | :--- |
-| **CogniPath CS-DKT** | CS (Arrays, Strings, Recursion, Trees, Graphs, DP) | 1,420 | 6 | `user_id`, `topic_id`, `is_correct`, `time_taken_sec`, `hints_used`, `attempts_count` |
-| **ASSISTments 2009-2010** | K-12 Math Skill Builder | 525,534 | 123 | `user_id`, `skill_id`, `correct`, `hint_count`, `ms_first_response` |
+| **CogniPath CS-DKT** | CS (Arrays, Strings, Recursion, Trees, Graphs, DP) | 2,500 | 6 | `user_id`, `topic_id`, `is_correct`, `time_taken_sec`, `hints_used`, `attempts_count` |
+| **ASSISTments 2009-2010** | K-12 Math Skill Builder | 525,534 | 124 | `user_id`, `skill_id`, `correct`, `hint_count`, `ms_first_response` |
 | **EdNet Dataset (Riiid)** | AI Test Prep & Tutoring | 131,441,538 | 188 | `solving_id`, `elapsed_time`, `user_answer`, `explanation_read` |
 | **KDD Cup 2010** | Algebra & Bridge to Algebra | 8,918,054 | 112 | `Student Id`, `Problem Name`, `Step Name`, `Incorrects`, `Hints` |
 | **Statics2011 (CMU)** | Engineering Statics | 189,297 | 84 | `Student ID`, `Problem Name`, `CF Attempt`, `Duration` |
 
 ---
 
-## 📁 Extracted PSV Files (`data/psv/`)
+## 📐 Deep Learning Model Architecture & Data Flow
 
-All dummy/synthetic datasets have been completely removed. This deep learning system operates directly on the extracted PSV files:
+```mermaid
+graph TD
+    subgraph "Student Interaction Layer"
+        A["Student Solves Question"] -->|Correctness, Time Taken, Hints, Attempts| B["Telemetry Capture"]
+    end
 
-### 1. `cognipath_cs_dkt.psv` (Primary CS/DSA Dataset)
-* **File Path**: [`data/psv/cognipath_cs_dkt.psv`](file:///c:/Users/Chirag%20Pradhan/dl%20model/data/psv/cognipath_cs_dkt.psv)
-* **Domain**: Computer Science & Data Structures (Arrays, Strings, Recursion, Trees, Graphs, DP).
-* **Interactions**: **1,420** interaction steps across **6 core CS topics**.
-* **Columns (Pipe-Separated)**:
-  ```text
-  user_id|topic_id|is_correct|time_taken_sec|hints_used|attempts_count
-  ```
-* **Sample Record**:
-  ```text
-  student_001|trees|1|388|0|1
-  student_002|trees|0|431|2|2
-  student_003|strings|1|227|0|1
-  student_004|arrays|1|116|0|1
-  ```
+    subgraph "Deep Knowledge Tracing DKT Core (PyTorch LSTM)"
+        B -->|Discrete & Continuous Features| C["Embedding + Telemetry Projection"]
+        C --> D["2-Layer LSTM Recurrent State h_t"]
+        D -->|Sigmoid Mastery Head| E["Topic Knowledge Profile Estimator"]
+    end
 
-### 2. `assistments_2009_2010.psv` (K-12 Math Benchmark)
-* **File Path**: [`data/psv/assistments_2009_2010.psv`](file:///c:/Users/Chirag%20Pradhan/dl%20model/data/psv/assistments_2009_2010.psv)
-* **Origin**: Worcester Polytechnic Institute (WPI) Neil Heffernan Lab & EduData Benchmark.
-* **Interactions**: **525,534** real student records across **123 skills**.
-* **Columns (Pipe-Separated)**:
-  ```text
-  user_id|skill_id|correct|hint_count|ms_first_response
-  ```
-* **Sample Record**:
-  ```text
-  user_1|7|1|0|4805
-  user_2|82|0|2|3586
-  user_3|98|1|0|15302
-  ```
+    subgraph "Diagnostic Analytics Engine"
+        E --> F["Weakness Detector ('Why You Are Weak')"]
+        E --> G["Ebbinghaus Forgetting Curve Tracker"]
+        E --> H["AI Learning DNA / Style Profiler"]
+    end
 
-### 3. `ednet.psv` (AI Test Prep & Tutoring)
-* **File Path**: [`data/psv/ednet.psv`](file:///c:/Users/Chirag%20Pradhan/dl%20model/data/psv/ednet.psv)
-* **Origin**: Riiid Labs (EdNet).
-* **Scope**: Standardized English & math AI tutoring interactions.
-* **Columns (Pipe-Separated)**:
-  ```text
-  solving_id|elapsed_time|user_answer|explanation_read
-  ```
+    subgraph "Adaptive Recommendation Engine"
+        F --> I["Personalized Recommender"]
+        G --> I
+        H --> I
+        I -->|Zone of Proximal Development & Spaced Revision| J["Targeted DSA Practice Generator"]
+    end
 
-### 4. `kdd_cup_2010.psv` (Algebra Cognitive Tutor)
-* **File Path**: [`data/psv/kdd_cup_2010.psv`](file:///c:/Users/Chirag%20Pradhan/dl%20model/data/psv/kdd_cup_2010.psv)
-* **Origin**: PSLC DataShop / Carnegie Mellon University.
-* **Scope**: Algebra & Bridge to Algebra problem steps.
-* **Columns (Pipe-Separated)**:
-  ```text
-  Student Id|Problem Name|Step Name|Incorrects|Hints
-  ```
+    J -->|Deliver Next Personal Question| A
+```
 
-### 5. `statics2011.psv` (Engineering Statics)
-* **File Path**: [`data/psv/statics2011.psv`](file:///c:/Users/Chirag%20Pradhan/dl%20model/data/psv/statics2011.psv)
-* **Origin**: Carnegie Mellon University (CMU) Open Learning Initiative (OLI).
-* **Scope**: University engineering statics problems.
-* **Columns (Pipe-Separated)**:
-  ```text
-  Student ID|Problem Name|CF Attempt|Duration
-  ```
-
----
-
-## 📐 Deep Learning Model Architecture
-
-The PyTorch Knowledge Tracing model ([`models/dkt_lstm.py`](file:///c:/Users/Chirag%20Pradhan/dl%20model/models/dkt_lstm.py)) implements an LSTM recurrent architecture:
-
+### PyTorch Architecture Details ([`models/dkt_lstm.py`](file:///c:/Users/Chirag%20Pradhan/dl%20model/models/dkt_lstm.py))
 1. **Discrete Embedding**:
    - Concept ID $c_t \in \{0, \dots, C-1\} \rightarrow \mathbf{e}_c(c_t) \in \mathbb{R}^{32}$
    - Answer Correctness $y_t \in \{0, 1\} \rightarrow \mathbf{e}_y(y_t) \in \mathbb{R}^{16}$
@@ -96,28 +90,24 @@ The PyTorch Knowledge Tracing model ([`models/dkt_lstm.py`](file:///c:/Users/Chi
    Encodes the dynamic cognitive state of the student in $\mathbf{h}_t \in \mathbb{R}^{64}$.
 4. **Mastery Prediction Head**:
    $$\hat{\mathbf{m}}_{t+1} = \sigma(\mathbf{W}_{\text{out}} \mathbf{h}_t + \mathbf{b}_{\text{out}}) \in (0, 1)^{C}$$
-   Predicts the probability of answering next questions correctly across all curriculum topics.
 
 ---
 
-## 📈 Training History & Benchmark Results
+## 📈 Training History & 50-Epoch Benchmark Results
 
 ### A. CogniPath CS-DKT Benchmark (CS / DSA)
 * **Model Checkpoint**: [`weights/dkt_lstm.pt`](file:///c:/Users/Chirag%20Pradhan/dl%20model/weights/dkt_lstm.pt)
-* **History File**: [`weights/training_history_cognipath.json`](file:///c:/Users/Chirag%20Pradhan/dl%20model/weights/training_history_cognipath.json)
+* **History File**: [`weights/training_history_cognipath.json`](file:///c:/Users/Chirag%20Pradhan/dl%20model/weights/training_history_cognipath.json) *(50 Epochs)*
 * **Metrics**:
-  - **ROC-AUC**: **0.6302**
-  - **F1-Score**: **0.7413**
-  - **Accuracy**: **62.51%**
   - **Skills Tracked**: Arrays, Strings, Recursion, Trees, Graphs, Dynamic Programming.
+  - **Varied Sequences**: 100 students, 2,500 interactions.
 
 ### B. ASSISTments 2009-2010 Benchmark (Math Skill Builder)
 * **Model Checkpoint**: [`weights/dkt_real_assist2009.pt`](file:///c:/Users/Chirag%20Pradhan/dl%20model/weights/dkt_real_assist2009.pt)
-* **History File**: [`weights/training_history_assistments.json`](file:///c:/Users/Chirag%20Pradhan/dl%20model/weights/training_history_assistments.json)
-* **Metrics (50 Epochs)**:
-  - **Real Test Predictions Evaluated**: **32,525 interactions**
-  - **ROC-AUC**: **0.7849**
-  - **Accuracy**: **73.37%**
+* **History File**: [`weights/training_history_assistments.json`](file:///c:/Users/Chirag%20Pradhan/dl%20model/weights/training_history_assistments.json) *(50 Epochs)*
+* **Metrics (50 Epochs on 32,525 unseen real test interactions)**:
+  - **Real Test ROC-AUC**: **0.7849**
+  - **Real Test Accuracy**: **73.37%**
   - **Skills Tracked**: 124 distinct skills.
 
 ---
@@ -129,32 +119,48 @@ The PyTorch Knowledge Tracing model ([`models/dkt_lstm.py`](file:///c:/Users/Chi
 pip install -r requirements.txt
 ```
 
-### 1. Train on CogniPath CS-DKT Dataset
+### 1. Launch Interactive Web Dashboard (Streamlit)
 ```powershell
-python train.py
+streamlit run app.py
+```
+Access the dashboard at `http://localhost:8501`.
+
+### 2. Interactive Terminal Mode (CLI)
+```powershell
+python demo_interactive.py
+```
+Includes:
+- Multi-Topic Diagnostic Assessment (Questionnaire across all 6 concepts at once).
+- Single question targeted adaptive solving.
+- Student A vs. Student B archetype simulations (70% score, opposite learning gaps).
+- Ebbinghaus forgetting curve fast-forward simulation.
+
+### 3. Continual Learning & Dynamic Dataset Updating
+Every time a student solves a problem (in CLI or Web app), the interaction is automatically synced into the PSV training dataset:
+```powershell
+# Incrementally fine-tune on newly accumulated student interactions:
+python train.py --incremental --epochs 5
+
+# Or trigger from CLI:
+python demo_interactive.py  # Choose Option [7]
 ```
 
-### 2. Evaluate on CogniPath CS-DKT Dataset
+### 4. Train from Scratch on CogniPath CS-DKT Dataset
+```powershell
+python train.py --epochs 50
+```
+
+### 5. Train on ASSISTments 2009-2010 Real Benchmark (50 Epochs)
+```powershell
+python train_real_dkt.py --epochs 50
+```
+
+### 6. Evaluate on CogniPath CS-DKT Dataset
 ```powershell
 python evaluate.py
 ```
 
-### 3. Train on ASSISTments 2009-2010 (124 Skills)
-```powershell
-python train_real_dkt.py
-```
-
-### 4. Interactive Terminal Mode (CLI)
-```powershell
-python demo_interactive.py
-```
-
-### 5. Automated Unit Tests
+### 7. Automated Unit Tests
 ```powershell
 python -m unittest discover -s tests -p "test_*.py"
-```
-
-### 6. Export/Refresh all PSV Datasets
-```powershell
-python extract_and_save_psv.py
 ```

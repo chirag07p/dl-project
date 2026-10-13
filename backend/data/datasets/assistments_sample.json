@@ -1,0 +1,11 @@
+{
+  "datasetId": "assistments-2009-2010",
+  "name": "ASSISTments 2009-2010 Benchmark Trajectory Sample",
+  "citation": "Piech, C., Bassen, J., Huang, J., Ganguli, S., Sahami, M., Guibas, L. J., & Sohl-Dickstein, J. (2015). Deep knowledge tracing. Advances in neural information processing systems (NIPS 2015).",
+  "sampleRecords": [
+    { "user_id": 70363, "skill_id": 26, "skill_name": "Box and Whisker", "correct": 1, "hint_count": 0, "ms_first_response": 24152 },
+    { "user_id": 70363, "skill_id": 26, "skill_name": "Box and Whisker", "correct": 1, "hint_count": 0, "ms_first_response": 18420 },
+    { "user_id": 70363, "skill_id": 27, "skill_name": "Circle Graph", "correct": 0, "hint_count": 2, "ms_first_response": 52100 },
+    { "user_id": 70364, "skill_id": 11, "skill_name": "Percent Of", "correct": 1, "hint_count": 0, "ms_first_response": 15300 }
+  ]
+}

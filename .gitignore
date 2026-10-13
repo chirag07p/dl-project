@@ -21,6 +21,7 @@ venv.bak/
 # Distribution & Build artifacts
 build/
 dist/
+dist-ssr/
 *.egg-info/
 *.egg
 
@@ -33,13 +34,27 @@ htmlcov/
 .streamlit/secrets.toml
 .streamlit/credentials.toml
 
+# Node & Frontend dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.local
+
 # Editor & IDE configurations
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
 *.sublime-project
 *.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
 
 # Operating System files
 .DS_Store
@@ -48,6 +63,7 @@ desktop.ini
 ehthumbs.db
 
 # Logs & Temporary files
+logs/
 *.log
 *.tmp
 scratch/

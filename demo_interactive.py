@@ -178,9 +178,10 @@ def run_interactive():
         print(" [4] Fast-forward time (Simulate days elapsed to test Forgetting curve)")
         print(" [5] Load Scenario: Student A (Strong Arrays/Strings, Weak Recursion/DP - 70% overall)")
         print(" [6] Load Scenario: Student B (Weak Arrays/Strings, Strong Recursion/Trees - 70% overall)")
+        print(" [7] Retrain / Fine-tune Model (Continually train on dynamically updated dataset)")
         print(" [0] Exit")
 
-        choice = input("\nSelect option [1/2/3/4/5/6/0]: ").strip()
+        choice = input("\nSelect option [1/2/3/4/5/6/7/0]: ").strip()
 
         if choice == "0":
             print("\nExiting. Happy learning!")
@@ -278,6 +279,21 @@ def run_interactive():
             print("\nLoading Preset: Student B (Weak Arrays/Strings, Strong Recursion/Trees)...")
             engine.seed_student_profile_preset(student_id, preset="student_b")
             print("Student B loaded! Notice how overall score is ~70%, but Arrays & Strings are weak.")
+
+        elif choice == "7":
+            print("\n" + "=" * 68)
+            print("DYNAMIC RETRAINING & CONTINUAL LEARNING")
+            print("=" * 68)
+            print("1. Syncing all newly recorded interactions to data/psv/cognipath_cs_dkt.psv...")
+            print("2. Starting continual fine-tuning of LSTM weights on the updated dataset...")
+            epochs_input = input("Enter number of fine-tuning epochs [default: 5]: ").strip()
+            num_epochs = int(epochs_input) if epochs_input.isdigit() else 5
+            try:
+                w_path = engine.retrain_model(epochs=num_epochs, incremental=True)
+                print(f"\n✅ Retraining complete! Model weights updated at {w_path}.")
+                print("The active session in memory has been reloaded with the newly updated model!\n")
+            except Exception as e:
+                print(f"❌ Retraining encountered an issue: {e}")
 
 
 if __name__ == "__main__":

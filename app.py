@@ -148,6 +148,17 @@ with col_p4:
         engine._save_student_store()
         st.rerun()
 
+st.sidebar.markdown("---")
+st.sidebar.subheader("🔄 Dynamic Model Retraining")
+st.sidebar.caption("Syncs newly solved interactions to dataset and continually fine-tunes the LSTM weights.")
+retrain_epochs = st.sidebar.number_input("Retrain Epochs", min_value=1, max_value=25, value=5, step=1)
+if st.sidebar.button("⚡ Retrain Model Now", use_container_width=True):
+    with st.sidebar.status("Syncing dataset & retraining model..."):
+        weights_p = engine.retrain_model(epochs=int(retrain_epochs), incremental=True)
+        st.cache_resource.clear()
+    st.sidebar.success("Model retrained on updated dataset!")
+    st.rerun()
+
 # Run Engine Pipeline
 pipeline_data = engine.run_full_pipeline(student_id)
 profile = pipeline_data["profile"]

@@ -1,0 +1,59 @@
+{
+  "datasets": [
+    {
+      "id": "cs-dkt-2026",
+      "name": "CogniPath CS-DKT Dataset",
+      "domain": "Computer Science (Arrays, Recursion, Trees, Graphs, DP)",
+      "interactionsCount": 1420,
+      "studentsCount": 120,
+      "skillComponents": 6,
+      "features": ["user_id", "question_id", "topic_id", "is_correct", "time_taken_sec", "hints_used", "attempts_count", "timestamp"],
+      "description": "Domain-specific interaction sequence trajectory dataset generated for adaptive algorithm testing.",
+      "paperReference": "CogniPath AI First Review Benchmark (2026)"
+    },
+    {
+      "id": "assistments-2009-2010",
+      "name": "ASSISTments 2009-2010 Skill Builder",
+      "domain": "K-12 Mathematics & Problem Solving",
+      "interactionsCount": 525534,
+      "studentsCount": 4217,
+      "skillComponents": 123,
+      "features": ["order_id", "user_id", "skill_id", "skill_name", "correct", "original", "hint_count", "ms_first_response"],
+      "description": "The landmark gold-standard dataset used by Piech et al. (2015) to evaluate Deep Knowledge Tracing (DKT).",
+      "paperReference": "Piech et al. Deep Knowledge Tracing (NIPS 2015)"
+    },
+    {
+      "id": "ednet-2020",
+      "name": "EdNet Dataset (Riiid AI in Education)",
+      "domain": "English & Adaptive Test Prep",
+      "interactionsCount": 131441538,
+      "studentsCount": 784309,
+      "skillComponents": 188,
+      "features": ["timestamp", "solving_id", "question_id", "user_answer", "elapsed_time", "explanation_read"],
+      "description": "Massive multi-modal AI tutoring dataset tracking student behavior, lecture views, and response times.",
+      "paperReference": "Choi et al. EdNet: A Large-Scale Educational Dataset (2020)"
+    },
+    {
+      "id": "kdd-cup-2010",
+      "name": "KDD Cup 2010 Educational Challenge",
+      "domain": "Algebra 2005-2006 & Bridge to Algebra",
+      "interactionsCount": 8918054,
+      "studentsCount": 3310,
+      "skillComponents": 112,
+      "features": ["Anon Student Id", "Problem Name", "Step Name", "First Attempt", "Incorrects", "Hints", "Corrects"],
+      "description": "ACM SIGKDD competition benchmark dataset evaluating cognitive tutor interaction sequences.",
+      "paperReference": "KDD Cup Educational Data Mining Challenge (2010)"
+    },
+    {
+      "id": "statics-2011",
+      "name": "Statics2011 (Carnegie Mellon University)",
+      "domain": "Engineering Statics & Vector Mechanics",
+      "interactionsCount": 189297,
+      "studentsCount": 333,
+      "skillComponents": 84,
+      "features": ["Student ID", "Problem Name", "Step Name", "CF (Correct First Attempt)", "Outcome", "Duration"],
+      "description": "CMU Open Learning Initiative dataset used for cross-domain knowledge tracing validation.",
+      "paperReference": "Koedinger et al. CMU DataShop Statics2011 (2011)"
+    }
+  ]
+}

@@ -348,5 +348,19 @@
     "val_loss": 0.7389,
     "val_auc": 0.6003,
     "val_acc": 0.5875
+  },
+  {
+    "epoch": 51,
+    "train_loss": 0.5067,
+    "val_loss": 0.7398,
+    "val_auc": 0.6067,
+    "val_acc": 0.5913
+  },
+  {
+    "epoch": 52,
+    "train_loss": 0.4979,
+    "val_loss": 0.7308,
+    "val_auc": 0.6069,
+    "val_acc": 0.5717
   }
 ]
