@@ -83,5 +83,131 @@
       }
     ],
     "current_day": 4.5
+  },
+  "chirag": {
+    "student_id": "chirag",
+    "name": "Chirag",
+    "interactions": [
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 95.0,
+        "attempts": 1,
+        "day": 1.2
+      },
+      {
+        "question_id": "q_arr_02",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 110.0,
+        "attempts": 1,
+        "day": 1.4
+      },
+      {
+        "question_id": "q_str_01",
+        "topic_id": "strings",
+        "correct": 1,
+        "time_taken": 105.0,
+        "attempts": 1,
+        "day": 1.6
+      },
+      {
+        "question_id": "q_str_02",
+        "topic_id": "strings",
+        "correct": 1,
+        "time_taken": 160.0,
+        "attempts": 1,
+        "day": 1.8
+      },
+      {
+        "question_id": "q_rec_01",
+        "topic_id": "recursion",
+        "correct": 0,
+        "time_taken": 240.0,
+        "attempts": 3,
+        "day": 2.1
+      },
+      {
+        "question_id": "q_rec_02",
+        "topic_id": "recursion",
+        "correct": 0,
+        "time_taken": 320.0,
+        "attempts": 4,
+        "day": 2.4
+      },
+      {
+        "question_id": "q_tree_01",
+        "topic_id": "trees",
+        "correct": 0,
+        "time_taken": 260.0,
+        "attempts": 3,
+        "day": 2.7
+      },
+      {
+        "question_id": "q_dp_01",
+        "topic_id": "dp",
+        "correct": 0,
+        "time_taken": 300.0,
+        "attempts": 3,
+        "day": 3.0
+      }
+    ],
+    "current_day": 3.0
+  },
+  "javed": {
+    "student_id": "javed",
+    "name": "Javed",
+    "interactions": [
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 15.0,
+        "attempts": 2,
+        "day": 0.2
+      },
+      {
+        "question_id": "q_str_01",
+        "topic_id": "strings",
+        "correct": 0,
+        "time_taken": 15.0,
+        "attempts": 2,
+        "day": 0.4
+      },
+      {
+        "question_id": "q_rec_01",
+        "topic_id": "recursion",
+        "correct": 1,
+        "time_taken": 15.0,
+        "attempts": 1,
+        "day": 0.6
+      },
+      {
+        "question_id": "q_tree_01",
+        "topic_id": "trees",
+        "correct": 0,
+        "time_taken": 15.0,
+        "attempts": 2,
+        "day": 0.8
+      },
+      {
+        "question_id": "q_graph_01",
+        "topic_id": "graphs",
+        "correct": 0,
+        "time_taken": 15.0,
+        "attempts": 2,
+        "day": 1.0
+      },
+      {
+        "question_id": "q_dp_01",
+        "topic_id": "dp",
+        "correct": 0,
+        "time_taken": 15.0,
+        "attempts": 2,
+        "day": 1.2
+      }
+    ],
+    "current_day": 1.2
   }
 }
