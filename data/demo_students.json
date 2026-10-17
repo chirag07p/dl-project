@@ -399,5 +399,28 @@
       }
     ],
     "current_day": 18.0
+  },
+  "ssn": {
+    "student_id": "ssn",
+    "name": "Ssn",
+    "interactions": [
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 10.0,
+        "attempts": 2,
+        "day": 0.5
+      },
+      {
+        "question_id": "q_rec_01",
+        "topic_id": "recursion",
+        "correct": 1,
+        "time_taken": 10.0,
+        "attempts": 1,
+        "day": 1.0
+      }
+    ],
+    "current_day": 1.0
   }
 }
