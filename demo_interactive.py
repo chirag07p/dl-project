@@ -158,9 +158,10 @@ def run_diagnostic_questionnaire(engine: PersonalizedAIEngine, student_id: str):
 
 def solve_single_question(q: dict, engine: PersonalizedAIEngine, student_id: str, header_label: str = "Recommended Practice"):
     """
-    Interactively presents an MCQ question, accepts option [A/B/C/D] or hint,
-    measures elapsed time automatically, evaluates correctness, and records the telemetry
-    without requiring manual self-reporting or manual stat editing.
+    Interactively presents an MCQ question. Asks the student to repeatedly answer
+    until the correct option is reached, auto-counting attempts and measuring total time
+    from question presentation to correct solution, while preserving the prompts
+    to confirm/adjust time taken and number of attempts.
     """
     option_letters = ["A", "B", "C", "D"]
     topic_name = engine.topic_names.get(q.get("topic_id"), q.get("topic_id", "General"))
@@ -182,7 +183,7 @@ def solve_single_question(q: dict, engine: PersonalizedAIEngine, student_id: str
     prompt_str = "/".join(valid_letters)
 
     hints_used = 0
-    attempts = 1
+    attempts = 0
     t_start = time.time()
 
     while True:
@@ -193,35 +194,50 @@ def solve_single_question(q: dict, engine: PersonalizedAIEngine, student_id: str
             continue
 
         if raw_ans in valid_letters:
+            attempts += 1
             user_idx = option_letters.index(raw_ans)
             correct_idx = q.get("correct_index", 0)
-            is_correct = 1 if user_idx == correct_idx else 0
-            t_spent = max(10.0, round(time.time() - t_start, 1))
 
-            if is_correct:
-                print("\n✅ Correct! Great job.")
+            if user_idx == correct_idx:
+                t_spent = max(5.0, round(time.time() - t_start, 1))
+                if attempts == 1:
+                    print(f"\n✅ Correct on first attempt! (Elapsed time: {t_spent:.1f}s)")
+                else:
+                    print(f"\n✅ Correct! Reached correct answer in attempt #{attempts}. (Total elapsed time: {t_spent:.1f}s)")
+
+                if q.get("explanation"):
+                    print(f"Explanation: {q['explanation']}")
+                break
             else:
-                correct_letter = option_letters[correct_idx]
-                print(f"\n❌ Incorrect. (Correct Answer was {correct_letter})")
-                attempts = 2
-
-            if q.get("explanation"):
-                print(f"Explanation: {q['explanation']}")
-
-            print(f"Time spent: {t_spent:.1f}s | Attempts: {attempts}")
-
-            engine.record_interaction(
-                student_id=student_id,
-                question_id=q["id"],
-                correct=is_correct,
-                time_taken_sec=t_spent,
-                attempts=attempts,
-                days_advanced=0.5,
-            )
-            print("Interaction saved! Deep Learning Model and Knowledge Profile updated.\n")
-            break
+                print(f"❌ Option {raw_ans} is incorrect. Try again! (Attempts so far: {attempts})")
         else:
             print(f"Please enter one of [{prompt_str}] (or 'hint').")
+
+    # Preserve functionality of confirming time taken and number of attempts with measured defaults
+    default_time = max(1, int(round(t_spent)))
+    time_str = input(f"\nTime taken in seconds [default: {default_time}]: ").strip()
+    try:
+        time_taken = float(time_str) if time_str else float(default_time)
+    except ValueError:
+        time_taken = float(default_time)
+
+    att_str = input(f"Number of attempts [default: {attempts}]: ").strip()
+    try:
+        final_attempts = int(att_str) if att_str else attempts
+    except ValueError:
+        final_attempts = attempts
+
+    is_correct = 1 if final_attempts == 1 else 0
+
+    engine.record_interaction(
+        student_id=student_id,
+        question_id=q["id"],
+        correct=is_correct,
+        time_taken_sec=time_taken,
+        attempts=final_attempts,
+        days_advanced=0.5,
+    )
+    print("\nInteraction saved! Deep Learning Model and Knowledge Profile updated.\n")
 
 
 def run_interactive():
