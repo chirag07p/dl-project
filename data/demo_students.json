@@ -388,8 +388,16 @@
         "time_taken": 120.0,
         "attempts": 2,
         "day": 17.5
+      },
+      {
+        "question_id": "q_arr_03",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 1.0,
+        "attempts": 2,
+        "day": 18.0
       }
     ],
-    "current_day": 17.5
+    "current_day": 18.0
   }
 }

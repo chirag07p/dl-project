@@ -156,6 +156,74 @@ def run_diagnostic_questionnaire(engine: PersonalizedAIEngine, student_id: str):
     print("Deep Learning model updated successfully across all concepts!\n")
 
 
+def solve_single_question(q: dict, engine: PersonalizedAIEngine, student_id: str, header_label: str = "Recommended Practice"):
+    """
+    Interactively presents an MCQ question, accepts option [A/B/C/D] or hint,
+    measures elapsed time automatically, evaluates correctness, and records the telemetry
+    without requiring manual self-reporting or manual stat editing.
+    """
+    option_letters = ["A", "B", "C", "D"]
+    topic_name = engine.topic_names.get(q.get("topic_id"), q.get("topic_id", "General"))
+    print("\n" + "=" * 68)
+    print(f"   {header_label.upper()}: [{q.get('difficulty', 'Medium')}] {q.get('title', '')}")
+    print(f"   Topic: {topic_name} | Concept: {q.get('concept_tested', q.get('title', ''))}")
+    print("=" * 68)
+    print(f"\n{q.get('question_text', q.get('description', ''))}\n")
+
+    options = q.get("options", [])
+    if options:
+        for opt in options:
+            print(f"   {opt}")
+    else:
+        print("   A. True / Optimal\n   B. False / Suboptimal")
+
+    num_opts = len(options) if options else 2
+    valid_letters = option_letters[:num_opts]
+    prompt_str = "/".join(valid_letters)
+
+    hints_used = 0
+    attempts = 1
+    t_start = time.time()
+
+    while True:
+        raw_ans = input(f"\nYour answer [{prompt_str}] (or 'hint'): ").strip().upper()
+        if raw_ans == "HINT":
+            hints_used += 1
+            print(f"💡 HINT: {q.get('hint', 'Analyze time complexity and optimal data structures.')}")
+            continue
+
+        if raw_ans in valid_letters:
+            user_idx = option_letters.index(raw_ans)
+            correct_idx = q.get("correct_index", 0)
+            is_correct = 1 if user_idx == correct_idx else 0
+            t_spent = max(10.0, round(time.time() - t_start, 1))
+
+            if is_correct:
+                print("\n✅ Correct! Great job.")
+            else:
+                correct_letter = option_letters[correct_idx]
+                print(f"\n❌ Incorrect. (Correct Answer was {correct_letter})")
+                attempts = 2
+
+            if q.get("explanation"):
+                print(f"Explanation: {q['explanation']}")
+
+            print(f"Time spent: {t_spent:.1f}s | Attempts: {attempts}")
+
+            engine.record_interaction(
+                student_id=student_id,
+                question_id=q["id"],
+                correct=is_correct,
+                time_taken_sec=t_spent,
+                attempts=attempts,
+                days_advanced=0.5,
+            )
+            print("Interaction saved! Deep Learning Model and Knowledge Profile updated.\n")
+            break
+        else:
+            print(f"Please enter one of [{prompt_str}] (or 'hint').")
+
+
 def run_interactive():
     print_banner()
     engine = PersonalizedAIEngine(
@@ -200,31 +268,7 @@ def run_interactive():
             if not q:
                 print("Question not found in taxonomy.")
                 continue
-
-            print(f"\n--- Recommended Practice: [{q['difficulty']}] {q['title']} ({q['topic_id']}) ---")
-            print(f"Concept: {q.get('concept_tested', q['title'])}")
-            print(f"\n{q.get('question_text', q['description'])}\n")
-            for opt in q.get("options", []):
-                print(f"   {opt}")
-
-            ans = input("\nDid you solve it correctly? (y/n) [default: y]: ").strip().lower()
-            correct = 0 if ans == "n" else 1
-
-            time_str = input(f"Time taken in seconds [default: {q['expected_time_sec']}]: ").strip()
-            time_taken = float(time_str) if time_str else float(q["expected_time_sec"])
-
-            att_str = input("Number of attempts [default: 1]: ").strip()
-            attempts = int(att_str) if att_str else 1
-
-            engine.record_interaction(
-                student_id=student_id,
-                question_id=q["id"],
-                correct=correct,
-                time_taken_sec=time_taken,
-                attempts=attempts,
-                days_advanced=0.5,
-            )
-            print("\nInteraction saved! Updating Deep Learning Model and Knowledge Profile...")
+            solve_single_question(q, engine, student_id, header_label="Recommended Practice")
 
         elif choice == "3":
             print("\nAvailable Questions by Topic:")
@@ -240,35 +284,21 @@ def run_interactive():
                 print(f"Unknown question ID '{q_id}'. Please pick an ID from the list above.")
                 continue
             q = engine.question_lookup[q_id]
-            print(f"\n--- Solving: [{q['difficulty']}] {q['title']} ({q['topic_id']}) ---")
-            print(f"Question: {q.get('question_text', q['description'])}")
-            for opt in q.get("options", []):
-                print(f"   {opt}")
-
-            ans = input("\nDid you solve it correctly? (y/n) [default: y]: ").strip().lower()
-            correct = 0 if ans == "n" else 1
-            time_str = input(f"Time taken in seconds [default: {q['expected_time_sec']}]: ").strip()
-            time_taken = float(time_str) if time_str else float(q["expected_time_sec"])
-            att_str = input("Number of attempts [default: 1]: ").strip()
-            attempts = int(att_str) if att_str else 1
-
-            engine.record_interaction(
-                student_id=student_id,
-                question_id=q_id,
-                correct=correct,
-                time_taken_sec=time_taken,
-                attempts=attempts,
-                days_advanced=0.5,
-            )
-            print("\nInteraction saved! Re-evaluating model...")
+            solve_single_question(q, engine, student_id, header_label="Targeted Question Practice")
 
         elif choice == "4":
-            days_str = input("Enter number of days to fast-forward (e.g., 14): ").strip()
+            print("\n" + "=" * 68)
+            print("   EBBINGHAUS FORGETTING CURVE SIMULATION (TEMPORAL FAST-FORWARD)")
+            print("   Simulate days elapsed without practice to test memory decay & revision")
+            print("=" * 68)
+            current_day = student.get("current_day", 0.0)
+            print(f"Current Student Timeline: Day {current_day:.1f}")
+            days_str = input("Enter number of days to fast-forward (e.g., 7, 14, 30) [default: 14]: ").strip()
             days = float(days_str) if days_str else 14.0
-            student["current_day"] = round(student.get("current_day", 0.0) + days, 2)
+            student["current_day"] = round(current_day + days, 2)
             engine._save_student_store()
-            print(f"\nAdvanced time by {days} days. Timeline is now Day {student['current_day']}.")
-            print("Notice the Ebbinghaus forgetting detection in the dashboard!")
+            print(f"\n⏩ Advanced time by {days:.1f} days! Timeline is now Day {student['current_day']:.1f}.")
+            print("Review Section 2 [Forgetting Detection] and Section 3 [Revision Plan] on the dashboard!")
 
         elif choice == "5":
             print("\nLoading Preset: Student A (Strong Arrays/Strings, Weak Recursion/DP)...")
