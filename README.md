@@ -119,11 +119,20 @@ graph TD
 pip install -r requirements.txt
 ```
 
-### 1. Launch Interactive Web Dashboard (Streamlit)
+### 1. Launch Backend API Server & React Frontend
+#### Backend (Python REST API):
 ```powershell
-streamlit run app.py
+python server.py
 ```
-Access the dashboard at `http://localhost:8501`.
+Runs the PyTorch DKT LSTM REST API server on `http://localhost:5000`.
+
+#### Frontend (React + Vite + Tailwind):
+```powershell
+cd vendor/frontend
+npm install
+npm run dev
+```
+Access the modern adaptive learning web interface at `http://localhost:5173`.
 
 ### 2. Interactive Terminal Mode (CLI)
 ```powershell
