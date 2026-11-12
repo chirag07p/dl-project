@@ -185,5 +185,91 @@
       }
     ],
     "current_day": 3.0
+  },
+  "demo_student": {
+    "student_id": "demo_student",
+    "name": "demo_student",
+    "interactions": [
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 45.0,
+        "attempts": 1,
+        "day": 0.1
+      }
+    ],
+    "current_day": 0.1
+  },
+  "Alex Chen (Demo Student)": {
+    "student_id": "Alex Chen (Demo Student)",
+    "name": "Alex Chen (Demo Student)",
+    "interactions": [
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 42.0,
+        "attempts": 1,
+        "day": 0.1
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 6.0,
+        "attempts": 1,
+        "day": 0.2
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 2.0,
+        "attempts": 1,
+        "day": 0.3
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 4.0,
+        "attempts": 1,
+        "day": 0.4
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 11.0,
+        "attempts": 1,
+        "day": 0.5
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 1,
+        "time_taken": 4.0,
+        "attempts": 2,
+        "day": 0.6
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 3.0,
+        "attempts": 2,
+        "day": 0.7
+      },
+      {
+        "question_id": "q_arr_01",
+        "topic_id": "arrays",
+        "correct": 0,
+        "time_taken": 109.0,
+        "attempts": 2,
+        "day": 0.8
+      }
+    ],
+    "current_day": 0.8
   }
 }
