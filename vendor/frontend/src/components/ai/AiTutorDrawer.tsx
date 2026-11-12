@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDemoLearning } from '../../context';
 import { BrainIcon, XIcon, ArrowRightIcon } from '../icons';
 import { Button } from '../ui/Button';
+import { cleanMarkdownSymbols, getSmartOfflineResponse } from '../../services/tutorKnowledge';
 
 interface Message {
   sender: 'user' | 'ai';
@@ -87,30 +88,35 @@ export const AiTutorDrawer: React.FC<AiTutorDrawerProps> = ({
           ...prev,
           {
             sender: 'ai',
-            text: response.answer,
+            text: cleanMarkdownSymbols(response.answer),
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             masteryContext: `${response.topic} Mastery: ${response.topic_mastery}% (${response.mastery_level})`,
             learningStyle: response.primary_style,
           },
         ]);
       } else {
-        // Fallback response if backend is offline
+        // Smart client-side response tailored to the exact question
+        const smartAnswer = getSmartOfflineResponse(textToSend, currentTopic);
         setMessages((prev) => [
           ...prev,
           {
             sender: 'ai',
-            text: `### 💡 Analysis for: ${textToSend}\nWhen tackling **${currentTopic}**, establish the pointer or state invariant before looping. Check edge conditions (e.g. empty inputs, duplicates, boundary crossings) and trace worst-case time complexity. *(To enable live neural network evaluation, run \`python server.py\`)*.`,
+            text: smartAnswer,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            masteryContext: `${currentTopic} Focus`,
           },
         ]);
       }
     } catch {
+      // Smart client-side response on network error
+      const smartAnswer = getSmartOfflineResponse(textToSend, currentTopic);
       setMessages((prev) => [
         ...prev,
         {
           sender: 'ai',
-          text: "I couldn't reach the backend server right now. Please ensure `python server.py` is running on port 5000.",
+          text: smartAnswer,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          masteryContext: `${currentTopic} Focus`,
         },
       ]);
     } finally {
@@ -216,7 +222,7 @@ export const AiTutorDrawer: React.FC<AiTutorDrawerProps> = ({
                     )}
                   </div>
                 )}
-                <div className="whitespace-pre-wrap">{m.text}</div>
+                <div className="whitespace-pre-wrap">{cleanMarkdownSymbols(m.text)}</div>
                 <div
                   className={`mt-1 text-[9px] ${
                     m.sender === 'user' ? 'text-indigo-200' : 'text-slate-400'

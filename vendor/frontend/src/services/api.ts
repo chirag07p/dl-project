@@ -3,7 +3,25 @@
  * Communicates with the PyTorch DKT LSTM engine, diagnostic profilers, and personalized recommender.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import { cleanMarkdownSymbols } from './tutorKnowledge';
+
+const CUSTOM_BASE = import.meta.env.VITE_API_URL;
+
+async function fetchApi(path: string, options: RequestInit = {}): Promise<Response> {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (CUSTOM_BASE) {
+    return await fetch(`${CUSTOM_BASE}${path}`, { ...options, headers });
+  }
+  try {
+    // 1. Try Vite local proxy path
+    const res = await fetch(`/api${path}`, { ...options, headers });
+    if (res.ok) return res;
+  } catch {
+    // Ignore proxy error and fallback to direct port 5000
+  }
+  // 2. Direct localhost:5000
+  return await fetch(`http://localhost:5000/api${path}`, { ...options, headers });
+}
 
 export interface BackendHealthResponse {
   status: string;
@@ -142,10 +160,7 @@ export const apiClient = {
    */
   async checkHealth(): Promise<BackendHealthResponse | null> {
     try {
-      const res = await fetch(`${API_BASE}/health`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const res = await fetchApi('/health', { method: 'GET' });
       if (!res.ok) return null;
       return await res.json();
     } catch {
@@ -158,10 +173,7 @@ export const apiClient = {
    */
   async getStudentProfile(studentId: string): Promise<StudentFullPipelineResponse | null> {
     try {
-      const res = await fetch(`${API_BASE}/student/${encodeURIComponent(studentId)}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const res = await fetchApi(`/student/${encodeURIComponent(studentId)}`, { method: 'GET' });
       if (!res.ok) return null;
       return await res.json();
     } catch {
@@ -177,9 +189,8 @@ export const apiClient = {
     payload: SubmitInteractionPayload
   ): Promise<SubmitInteractionResponse | null> {
     try {
-      const res = await fetch(`${API_BASE}/interact`, {
+      const res = await fetchApi('/interact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       if (!res.ok) return null;
@@ -195,13 +206,16 @@ export const apiClient = {
    */
   async askAiTutor(payload: AskAiPayload): Promise<AskAiResponse | null> {
     try {
-      const res = await fetch(`${API_BASE}/ask`, {
+      const res = await fetchApi('/ask', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       if (!res.ok) return null;
-      return await res.json();
+      const data: AskAiResponse = await res.json();
+      if (data && data.answer) {
+        data.answer = cleanMarkdownSymbols(data.answer);
+      }
+      return data;
     } catch {
       return null;
     }
@@ -212,10 +226,7 @@ export const apiClient = {
    */
   async resetDemo(): Promise<boolean> {
     try {
-      const res = await fetch(`${API_BASE}/reset-demo`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const res = await fetchApi('/reset-demo', { method: 'POST' });
       return res.ok;
     } catch {
       return false;

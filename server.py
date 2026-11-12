@@ -305,78 +305,32 @@ def ask_ai_tutor():
     pipeline = engine.run_full_pipeline(student_id)
     profile = pipeline["profile"]
     style = pipeline["learning_style"]
-    weaknesses = pipeline["weaknesses"]
+    rec = pipeline["recommendation"]
 
     topic_m = profile.topic_masteries.get(backend_topic)
     mastery_pct = round(topic_m.mastery_score * 100, 1) if topic_m else 50.0
+    mastery_level = topic_m.mastery_level if topic_m else "Developing"
 
-    # Build pedagogical response based on DKT knowledge profile
-    related_weaknesses = [w for w in weaknesses if w.topic_id == backend_topic]
-    has_weak_prereq = len(related_weaknesses) > 0 and len(related_weaknesses[0].weak_prerequisites) > 0
-
-    response_parts = []
-    
-    # 1. Direct answer / greeting & contextual mastery
-    response_parts.append(
-        f"**CogniPath AI Tutor:** I analyzed your current learning state for **{topic}** "
-        f"(DKT Estimated Mastery: **{mastery_pct}%** • Level: *{topic_m.mastery_level if topic_m else 'Developing'}*)."
+    from tutor_engine import generate_tutor_response
+    answer_text = generate_tutor_response(
+        query=user_query,
+        topic=topic,
+        mastery_pct=mastery_pct,
+        mastery_level=mastery_level,
+        style_name=style.primary_style,
+        style_guidance=style.pedagogical_guidance,
+        rec_topic=rec.recommended_topic_name,
+        rec_diff=rec.recommended_difficulty,
+        rec_reason=rec.reasoning
     )
-
-    # 2. Targeted Conceptual Guidance based on user query
-    q_lower = user_query.lower()
-    if "why" in q_lower or "explain" in q_lower or "how" in q_lower:
-        if "time" in q_lower or "complexity" in q_lower:
-            response_parts.append(
-                "### ⏱️ Time & Space Complexity Analysis\n"
-                "- **Optimal Time Complexity:** Most two-pointer and sliding window approaches achieve **O(n)** time because each pointer advances at most `n` times.\n"
-                "- **Space Complexity:** **O(1)** auxiliary memory since pointers modify index markers in-place without copying the underlying buffer."
-            )
-        elif "invariant" in q_lower or "pointer" in q_lower or "two sum" in q_lower:
-            response_parts.append(
-                "### 💡 Two-Pointer Invariant Breakdown\n"
-                "When the array is sorted in ascending order:\n"
-                "1. If `numbers[left] + numbers[right] > target`, the current sum is strictly too large. Since `numbers[left]` is already the smallest remaining candidate on the left boundary, no element added to `numbers[right]` can ever reach `target`. Therefore, the only valid decision is **`right--`**.\n"
-                "2. Conversely, if `currentSum < target`, the sum is too small; advance **`left++`**."
-            )
-        else:
-            response_parts.append(
-                f"### 🔍 Conceptual Foundation for {topic}\n"
-                f"Focus on identifying the pattern invariant before writing code. Notice how constraints (such as sorted order or monotonic ranges) eliminate half the search space at each decision point."
-            )
-    elif "recommend" in q_lower or "next" in q_lower or "what should i practice" in q_lower:
-        rec = pipeline["recommendation"]
-        response_parts.append(
-            f"### 🎯 Recommended Learning Path\n"
-            f"Based on your DKT mastery curve, your next focus area is **{rec.recommended_topic_name}** at **{rec.recommended_difficulty}** difficulty.\n"
-            f"- **Pedagogical Rationale:** {rec.reasoning}"
-        )
-    else:
-        # General question explanation
-        response_parts.append(
-            f"### 💡 Deep Learning Analysis for '{question_title or topic}'\n"
-            f"You asked: *\"{user_query}\"*\n\n"
-            f"Here is the systematic mental model:\n"
-            f"1. **State the Invariant:** What property must hold true across all iterations?\n"
-            f"2. **Identify Edge Cases:** Empty structures, duplicate values, and single-element bounds.\n"
-            f"3. **Prerequisite Check:** "
-            + (f"Note that {topic} builds upon prerequisite foundations. Ensure your baseline is verified." if has_weak_prereq else "Your foundational prerequisites for this topic are currently solid.")
-        )
-
-    # 3. Learning Style Adaption
-    response_parts.append(
-        f"\n*AI Learning Style Note:* You are categorized as a **{style.primary_style}**. "
-        f"{style.pedagogical_guidance}"
-    )
-
-    full_reply = "\n\n".join(response_parts)
 
     return jsonify({
         "success": True,
         "query": user_query,
         "topic": topic,
         "topic_mastery": mastery_pct,
-        "mastery_level": topic_m.mastery_level if topic_m else "Developing",
-        "answer": full_reply,
+        "mastery_level": mastery_level,
+        "answer": answer_text,
         "primary_style": style.primary_style
     })
 
